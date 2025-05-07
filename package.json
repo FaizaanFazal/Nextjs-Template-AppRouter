@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npm run post-build-fixes",
-    "post-build-fixes": "scripts/post-build-fixes",
+    "build": "next build && node ./scripts/post-export.js",
+    "post-export": "node ./scripts/post-export.js",
     "lint": "next lint"
   },
   "dependencies": {
