@@ -16,7 +16,7 @@ export default function Home() {
           height={38}
           priority
         />
-        <div className="text-4xl">{count}</div>
+        <div className="text-4xl">Count: {count}</div>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a

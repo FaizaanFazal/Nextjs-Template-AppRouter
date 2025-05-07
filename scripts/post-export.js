@@ -1,28 +1,39 @@
 #!/usr/bin/env node
-import { mkdirSync, existsSync, renameSync } from 'fs';
-import { resolve, join } from 'path';
+import { existsSync, mkdirSync, renameSync, copyFileSync, cpSync } from 'node:fs';
+import { resolve, join } from 'node:path';
 
-// 1) Locate your out/ directory
-const projectRoot = process.cwd();
-const outDir = resolve(projectRoot, 'out');
+const root   = process.cwd();
+const outDir = resolve(root, 'out');
 
-// 2) Create out/next-assets
-const assetsDir = join(outDir, 'next-assets');
-mkdirSync(assetsDir, { recursive: true });
-
-// 3) Move out/_next → out/next-assets/_next
+// 1) Move _next → next-assets/_next
 const oldNext = join(outDir, '_next');
+const newNextAssets = join(outDir, 'next-assets');
 if (existsSync(oldNext)) {
-  renameSync(oldNext, join(assetsDir, '_next'));
-  console.log('✔️  moved _next → next-assets/_next');
-} else {
-  console.warn('⚠️  no _next folder found to move');
+  // ensure out/next-assets exists
+  mkdirSync(newNextAssets, { recursive: true });
+  renameSync(oldNext, join(newNextAssets, '_next'));
+  console.log('✔ moved _next → next-assets/_next');
 }
 
-// 4) Now invoke your inline‐script replacement
-import('./replace-inline-scripts.mjs')
-  .then(() => console.log('✔️  inline scripts extracted'))
-  .catch((err) => {
-    console.error('❌  error extracting inline scripts:', err);
-    process.exit(1);
-  });
+// 2) Recursively copy your public subfolders
+for (const folder of ['assets', 'icons', 'images']) {
+  const src = join(root, 'public', folder);
+  const dst = join(outDir, folder);
+  if (!existsSync(src)) {
+    console.warn(`⚠ public/${folder} not found, skipping`);
+    continue;
+  }
+  // fs.cpSync does a recursive copy
+  cpSync(src, dst, { recursive: true });
+  console.log(`✔ copied public/${folder} → out/${folder}`);
+}
+
+// 3) Copy manifest.json (single file)
+const manifestSrc = join(root, 'public', 'manifest.json');
+const manifestDst = join(outDir, 'manifest.json');
+if (existsSync(manifestSrc)) {
+  copyFileSync(manifestSrc, manifestDst);
+  console.log('✔ copied manifest.json → out/manifest.json');
+} else {
+  console.warn('⚠ public/manifest.json not found, skipping');
+}

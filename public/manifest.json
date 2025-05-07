@@ -7,34 +7,34 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "extension_16.png",
-      "24": "extension_24.png",
-      "32": "extension_32.png"
+      "16": "images/extension_16.png",
+      "24": "images/extension_24.png",
+      "32": "images/extension_32.png"
     }
   },
   "icons": {
-    "16": "extension_16.png",
-    "32": "extension_32.png",
-    "48": "extension_48.png",
-    "128": "extension_128.png",
-    "256": "extension_256.png"
+    "16": "images/extension_16.png",
+    "32": "images/extension_32.png",
+    "48": "images/extension_48.png",
+    "128": "images/extension_128.png",
+    "256": "images/extension_256.png"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "js": ["assets/js/content.js"]
     }
   ],
   "permissions": ["storage", "tabs", "activeTab", "scripting", "webRequest"],
   "host_permissions": ["<all_urls>"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "assets/js/background.js"
   },
   "web_accessible_resources": [
     {
-      "resources": ["injected.js"],
+      "resources": ["assets/js/injected.js"],
       "matches": ["<all_urls>"]
     }
   ],
-  "devtools_page": "start-devtools.html"
+  "devtools_page": "assets/html/start-devtools.html"
 }
