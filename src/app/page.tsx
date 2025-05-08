@@ -1,22 +1,39 @@
 "use client";
 
+import { incrementCount, loadCount } from "@/lib/server-actions";
 import { useClickStore } from "@/store/clicks";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function Home() {
-  const { count } = useClickStore();
+  const { count, setCount } = useClickStore();
+
+  useEffect(() => {
+    (async () => {
+      const n = await loadCount();
+      setCount(n);
+    })();
+  }, [setCount]);
+
+  const handleClick = async () => {
+    const next = count + 1;
+    await incrementCount(next);
+    setCount(next);
+  };
+  
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
-          src="/next.svg"
+          src="/icons/next.svg"
           alt="Next.js logo"
           width={180}
           height={38}
           priority
         />
-        <div className="text-4xl">Count: {count}</div>
+        <div className="text-4xl">Count: {count ? count:0}</div>
+        <button onClick={handleClick}>Increment</button>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
@@ -27,7 +44,7 @@ export default function Home() {
           >
             <Image
               className="dark:invert"
-              src="/vercel.svg"
+              src="/icons/vercel.svg"
               alt="Vercel logomark"
               width={20}
               height={20}
@@ -53,7 +70,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="/file.svg"
+            src="/icons/file.svg"
             alt="File icon"
             width={16}
             height={16}
@@ -68,7 +85,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="/window.svg"
+            src="/icons/window.svg"
             alt="Window icon"
             width={16}
             height={16}
@@ -83,7 +100,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="/globe.svg"
+            src="/icons/globe.svg"
             alt="Globe icon"
             width={16}
             height={16}

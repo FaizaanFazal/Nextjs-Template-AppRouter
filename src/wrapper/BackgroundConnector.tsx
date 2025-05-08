@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import { useClickStore } from "@/store/clicks";
-import { FC, PropsWithChildren, useEffect } from "react";
+import { useClickStore } from '@/store/clicks';
+import { FC, PropsWithChildren, useEffect } from 'react';
 
 const BackgroundConnector: FC<PropsWithChildren> = ({ children }) => {
-  const { inc } = useClickStore();
+  // grab only the setter from your store
+  const setCount = useClickStore(state => state.setCount);
 
   useEffect(() => {
-    const port = chrome.runtime.connect({ name: "popup" });
+    const port = chrome.runtime.connect({ name: 'popup' });
 
-    // Listen for messages from the background script
     port.onMessage.addListener((message: { type: string; clicks: number }) => {
-      console.log("Message received");
-      if (message.type === "click") {
-        inc(message.clicks);
+      if (message.type === 'click') {
+        // update your local UI to whatever the background passed
+        setCount(message.clicks);
       }
     });
 
     return () => {
       port.disconnect();
     };
-  }, []);
+  }, [setCount]);
 
-  return children;
+  return <>{children}</>;
 };
 
 export default BackgroundConnector;
