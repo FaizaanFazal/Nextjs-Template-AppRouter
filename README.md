@@ -1,53 +1,126 @@
-# Chrome Extension Starter Kit for Next.js + TypeScript + Tailwind CSS
-A modern and flexible starter kit for building Chrome Extensions using Next.js, TypeScript, and Tailwind CSS. This starter kit simplifies the process of building scalable Chrome Extensions with a clean, production-ready setup.
+# Chrome Extension using Full “hosted” Next.js app (Server + Prisma + NextAuth)
 
-## Features:
-- Next.js for server-side rendering and easy development
--TypeScript for strong typing and better developer experience
-- Tailwind CSS for responsive, utility-first design
-- Chrome extension architecture ready to use:
-- Content scripts for injecting functionality into the browser
-- Background scripts for handling long-lived processes
-` Injected scripts for manipulating DOM elements
+A modern starter kit for building a Chrome Extension with:
 
-## Project Structure:
-- `public/content`: Contains the wallet content script file.
-- `public/background`: Includes the wallet background.js script.
-- `public/injected`: Injects classes and styles into the window.
-- `out`: The directory containing the built Chrome Extension ready to be loaded into Chrome.
+- **Next.js** (App Router & Server Actions)
+- **TypeScript**
+- **Tailwind CSS**
+- **Prisma** for database access
+- **Zustand** for client-side state
 
-  
-## How to Setup Your Chrome Extension
-This starter kit requires no complicated setup. Just follow these easy steps:
+---
 
-1. Install Dependencies:
-Run the following command to install all necessary dependencies:
+## Prerequisites
 
-```bash Copy code
-npm install
+- Node.js v18 or later
+- npm v8 or later
+
+---
+
+## Installation Instructions
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Generate and synchronize your Prisma client:
+
+   ```bash
+   npm run prisma:sync
+   ```
+
+---
+
+## Development
+
+1. Start the Next.js development server:
+
+   ```bash
+   npm run dev
+   ```
+
+2. In a separate Chrome window:
+
+   - Open `chrome://extensions`
+   - Enable **Developer mode** (toggle in the top-right)
+   - Click **Load unpacked**
+   - Select this project’s `public/` folder
+
+3. Click the extension icon in the toolbar — a popup window will open at `http://localhost:3000/`.
+
+---
+
+## Project Structure
+
 ```
-2. Build the Extension:
-To build the extension for use, run:
-
-```bash Copy code
-npm run build
+.
+├── public/
+│   ├── manifest.json         # Chrome extension manifest
+│   ├── background.js         # Service worker that opens the popup
+│   └── images/
+│       └── extension_16.png  # Extension icons
+├── src/
+│   ├── app/
+│   │   ├── page.tsx          # Popup UI component (uses Zustand)
+│   │   └── api/
+│   │       └── clicks/
+│   │           └── route.ts  # REST API for click count
+│   ├── lib/
+│   │   ├── prisma.ts         # Prisma client initialization
+│   │   └── server-actions.ts # Server Actions for load/increment
+│   └── store/
+│       └── clicks.ts         # Zustand store (load & inc)
+├── prisma/
+│   └── schema.prisma         # Your Prisma schema
+├── next.config.js            # Next.js configuration
+├── package.json              # npm scripts & dependencies
+└── README.md                 # This file
 ```
-3. Load into Chrome:
-Open Chrome and navigate to chrome://extensions/
-Enable Developer Mode (toggle on the top-right)
-Click on Load unpacked and select the out directory from your project.
 
-## Congratulations! 🎉
-Your Chrome extension is now ready! You can now start building your own features and customizing the starter kit.
+---
 
-## Support & Community
-⭐ If you found this project useful, please give it a star! It helps others discover it and supports the development of the project.
+## How It Works
 
-🔄 Fork this repository to contribute or modify it for your own needs!
+- **Extension package** (the `public/` folder) only contains:
+  - `manifest.json`
+  - `background.js`
+  - icons and any static assets
+
+- When the toolbar icon is clicked, **`background.js`** opens a popup window at `http://localhost:3000/`.
+
+- **Next.js** serves the popup UI at `/`:
+  - Uses React + Zustand to display and update a counter.
+  - Calls **`GET /api/clicks`** to fetch the latest count.
+  - Calls **`POST /api/clicks`** to persist the new count.
+
+- **Server Actions** (or the REST route) use **Prisma** to read/write your database.
+
+---
+
+## Building for Production
+
+1. Build and generate Prisma client:
+
+   ```bash
+   npm run prisma:sync
+   npm run build
+   ```
+
+2. Ensure **`background.js`** points to your production URL:
+
+   ```js
+   const EXT_URL = 'https://your-production-domain.vercel.app/';
+   ```
+
+3. Zip up the **same** `public/` folder and publish to the Chrome Web Store.
+
+---
 
 ## Additional Resources
-For more information on building Chrome Extensions with Next.js, TypeScript, and Tailwind CSS, refer to the following resources:
 
-- [Chrome Extension Documentation](https://developer.chrome.com/docs/extensions/reference/api)
 - [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs/installation)
+- [Prisma Documentation](https://www.prisma.io/docs/)
+- [Chrome Extensions Docs](https://developer.chrome.com/docs/extensions/)
+- [Zustand GitHub](https://github.com/pmndrs/zustand)

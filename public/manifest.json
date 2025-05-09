@@ -1,17 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/chrome-manifest",
   "manifest_version": 3,
-  "name": "chrome-extension",
-  "description": "A simple chrome extension",
+  "name": "My Hosted Extension",
+  "description": "A simple hosted Chrome Extension",
   "version": "1.0.0",
-  "action": {
-    "default_popup": "index.html",
-    "default_icon": {
-      "16": "images/extension_16.png",
-      "24": "images/extension_24.png",
-      "32": "images/extension_32.png"
-    }
-  },
+
   "icons": {
     "16": "images/extension_16.png",
     "32": "images/extension_32.png",
@@ -19,25 +12,29 @@
     "128": "images/extension_128.png",
     "256": "images/extension_256.png"
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["assets/js/content.js"]
+
+  "action": {
+    "default_icon": {
+      "16": "images/extension_16.png",
+      "32": "images/extension_32.png"
     }
-  ],
-  "content_security_policy": {
-   "extension_pages": "script-src 'self'; object-src 'self';"
+    
   },
-  "permissions": ["storage", "tabs", "activeTab", "scripting", "webRequest"],
-  "host_permissions": ["<all_urls>"],
+
   "background": {
     "service_worker": "assets/js/background.js"
   },
+
+  "permissions": ["tabs","windows","storage","activeTab","scripting"],
+  "host_permissions": [  
+    "http://localhost:3000/*",
+    "https://your-app.vercel.app/*"
+  ],
+
   "web_accessible_resources": [
     {
-      "resources": ["assets/js/injected.js"],
+      "resources": ["images/*"],
       "matches": ["<all_urls>"]
     }
-  ],
-  "devtools_page": "assets/html/start-devtools.html"
+  ]
 }

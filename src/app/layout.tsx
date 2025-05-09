@@ -1,4 +1,4 @@
-import BackgroundConnector from "@/wrapper/BackgroundConnector";
+// import BackgroundConnector from "@/wrapper/BackgroundConnector";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -28,7 +28,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-[450px]`}
       >
-        <BackgroundConnector>{children}</BackgroundConnector>
+        {/* <BackgroundConnector> */}
+          {children}
+          {/* </BackgroundConnector> */}
       </body>
     </html>
   );
