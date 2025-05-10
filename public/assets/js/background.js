@@ -14,13 +14,13 @@
 
 
 // Development URL (your local Next.js)
-const DEV_URL = 'http://localhost:3000/';
+// const DEV_URL = 'http://localhost:3000/';
 
-chrome.action.onClicked.addListener(() => {
-  chrome.windows.create({
-    url: DEV_URL,
-    type: 'popup',
-    width: 400,
-    height: 600
-  });
-});
+// chrome.action.onClicked.addListener(() => {
+//   chrome.windows.create({
+//     url: DEV_URL,
+//     type: 'popup',
+//     width: 400,
+//     height: 600
+//   });
+// });
