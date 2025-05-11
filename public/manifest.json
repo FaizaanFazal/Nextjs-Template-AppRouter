@@ -21,13 +21,14 @@
   "background": {
     "service_worker": "assets/js/background.js"
   },
-  "permissions": [
+   "permissions": [
+    "identity",
     "tabs",
-    "windows",
     "storage",
     "activeTab",
     "scripting"
   ],
+
   "host_permissions": [
     "http://localhost:3000/*",
     "https://your-app.vercel.app/*",
@@ -44,6 +45,6 @@
     }
   ],
    "content_security_policy": {
-    "extension_pages": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src http://localhost:3000 https://your-app.vercel.app; img-src 'self' data:; frame-src http://localhost:3000 https://your-app.vercel.app; object-src 'self';"
+    "extension_pages": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src http://localhost:3000 https://your-app.vercel.app https://github.com/; img-src 'self' data:; frame-src http://localhost:3000 https://your-app.vercel.app https://github.com/; object-src 'self';"
   }
 }
