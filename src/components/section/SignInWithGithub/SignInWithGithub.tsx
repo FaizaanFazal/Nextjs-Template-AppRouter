@@ -5,7 +5,7 @@ export default function SignInWithGithub() {
     console.log("React: asking parent for LOGIN_WITH_GITHUB");
     window.parent.postMessage(
       { type: "LOGIN_WITH_GITHUB" },
-      "*" 
+      "*"
     );
   };
 

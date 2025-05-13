@@ -15,6 +15,12 @@ export default function HomePage() {
     }
   }, [status, load]);
 
+    useEffect(() => {
+    if (status === 'authenticated') {
+      window.parent.postMessage({ type: 'CLOSE_POPUP' }, '*')
+    }
+  }, [status])
+  
   if (status === 'loading') {
     return <div style={{ padding: 16 }}>Loading…</div>;
   }

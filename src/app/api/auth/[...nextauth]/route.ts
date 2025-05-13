@@ -8,8 +8,11 @@ export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GitHubProvider({
-      clientId:     process.env.GITHUB_ID!,
+      clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
+      authorization: {
+        params: { login: "" }
+      }
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET!,
@@ -17,8 +20,10 @@ export const authOptions: AuthOptions = {
     strategy: 'database' as SessionStrategy,  // narrow to the literal type
   },
   callbacks: {
-    async redirect({ baseUrl }) {
-      return baseUrl;  // after sign-in, send everyone back to /
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("chrome-extension://")) return url;
+      if (url.startsWith(baseUrl)) return url;
+      return baseUrl;
     },
   },
 };

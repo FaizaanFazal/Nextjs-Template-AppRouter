@@ -124,3 +124,10 @@ A modern starter kit for building a Chrome Extension with:
 - [Prisma Documentation](https://www.prisma.io/docs/)
 - [Chrome Extensions Docs](https://developer.chrome.com/docs/extensions/)
 - [Zustand GitHub](https://github.com/pmndrs/zustand)
+
+
+## URLs to update
+1. public/Manifest file (host_permissions,content_security_policy)
+2. public/popup.html
+3. ENV
+4. public\assets\js\background.js
