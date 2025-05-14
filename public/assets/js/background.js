@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener((msg) => {
 
   const redirectUri = chrome.identity.getRedirectURL();
   const authUrl =
-    `https://62ca-121-147-116-47.ngrok-free.app/api/auth/signin/github` +
+    `http://localhost:3000/api/auth/signin/github` +
     `?callbackUrl=${encodeURIComponent(redirectUri)}` + `&authorizationParams[login]=`;
   console.log("Expected redirectUri:", redirectUri);
   chrome.identity.launchWebAuthFlow(

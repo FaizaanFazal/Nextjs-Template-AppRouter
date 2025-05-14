@@ -46,6 +46,6 @@
     }
   ],
    "content_security_policy": {
-    "extension_pages": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://62ca-121-147-116-47.ngrok-free.app https://localhost:3000 https://your-app.vercel.app https://github.com/; img-src 'self' data:; frame-src https://62ca-121-147-116-47.ngrok-free.app https://localhost:3000 https://your-app.vercel.app https://github.com/; object-src 'self';"
+    "extension_pages": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://62ca-121-147-116-47.ngrok-free.app http://localhost:3000 https://your-app.vercel.app https://github.com/; img-src 'self' data:; frame-src https://62ca-121-147-116-47.ngrok-free.app http://localhost:3000 https://your-app.vercel.app https://github.com/; object-src 'self';"
   }
 }
