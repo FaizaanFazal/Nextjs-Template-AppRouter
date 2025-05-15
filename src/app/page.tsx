@@ -2,8 +2,9 @@
 import { useEffect } from 'react';
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useClickStore } from '@/store/clicks';
-import SignInWithGithub from '@/components/section/SignInWithGithub/SignInWithGithub';
+// import SignInWithGithub from '@/components/section/SignInWithGithub/SignInWithGithub';
 import NavButtons from '@/components/section/NavButtons/NavButtons';
+import SignInPage from './auth/signin/page';
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -27,7 +28,7 @@ export default function HomePage() {
 
   if (!session) {
     return (
-     <SignInWithGithub />
+     <SignInPage />
     );
   }
 
@@ -56,32 +57,3 @@ export default function HomePage() {
   );
 }
 
-// import { useEffect } from 'react';
-// import { useClickStore } from '@/store/clicks';
-// import NavButtons from '@/components/section/NavButtons/NavButtons';
-
-// export default function Page() {
-//   const { count, load, inc } = useClickStore();
-
-//   useEffect(() => {
-//     load();
-//   }, [load, count]);
-
-//   return (
-//     <main style={{ padding: 16, fontFamily: 'sans-serif' }} className='flex flex-col justify-between'>
-//       <div>
-//         <h1>Extension Counter</h1>
-//         <div style={{ margin: '12px 0', fontSize: 20 }}>Count: {count}</div>
-//         <button
-//           style={{ padding: '8px 16px', fontSize: 16 }}
-//           onClick={() => inc()}
-//         >
-//           +1 and Save
-//         </button>
-//       </div>
-
-
-//       <NavButtons backHref={undefined} nextHref="/extension" />
-//     </main>
-//   );
-// }

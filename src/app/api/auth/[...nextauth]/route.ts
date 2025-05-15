@@ -1,35 +1,48 @@
-import NextAuth from 'next-auth/next';
-import GitHubProvider from 'next-auth/providers/github';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import prisma from '@/lib/prisma';
-import type { AuthOptions, SessionStrategy } from 'next-auth';
+// src/app/api/auth/[...nextauth]/route.ts
+import NextAuth, { NextAuthOptions } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { prisma } from "@/lib/prisma"
+import { compare } from "bcryptjs"
 
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
   providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-      authorization: {
-        params: { login: "" }
-      }
+    CredentialsProvider({
+      name: "Email + Password",
+      credentials: {
+        email:    { label: "Email",    type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        })
+        if (!user || !user.hashedPassword) return null
+        const valid = await compare(credentials.password, user.hashedPassword)
+        if (!valid) return null
+        return { id: user.id, email: user.email!, name: user.name! }
+      },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET!,
-  session: {
-    strategy: 'database' as SessionStrategy,  // narrow to the literal type
+  pages: {
+    signIn: "/auth/signin",
+    error:  "/auth/signin",
   },
   callbacks: {
-    async redirect({ url, baseUrl }) {
-      if (url.startsWith("chrome-extension://")) return url;
-      if (url.startsWith(baseUrl)) return url;
-      return baseUrl;
+    async jwt({ token, user }) {
+      if (user) token.id = user.id
+      return token
+    },
+    async session({ session, token }) {
+      if (token.id) session.user.id = token.id as string
+      return session
     },
   },
-};
+  secret: process.env.NEXTAUTH_SECRET,
+}
 
-// Initialize NextAuth handler
-const handler = NextAuth(authOptions);
-
-// Tell Next.js “this route” (all /api/auth/… paths) supports GET & POST
-export { handler as GET, handler as POST };
+const handler = NextAuth(authOptions)
+export { handler as GET, handler as POST }
