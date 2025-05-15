@@ -61,23 +61,20 @@ export default function SignInPage() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                    className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
             </div>
 
             <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded transition"
-            >
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded transition">
                 Log in
             </button>
 
             <p className="mt-4 text-sm text-gray-600 text-center">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{' '}
                 <a
                     href="/auth/signup"
-                    className="text-blue-600 hover:underline"
-                >
+                    className="text-blue-600 hover:underline">
                     Sign Up
                 </a>
             </p>

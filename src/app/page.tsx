@@ -1,8 +1,7 @@
 'use client';
 import { useEffect } from 'react';
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession,  signOut } from "next-auth/react";
 import { useClickStore } from '@/store/clicks';
-// import SignInWithGithub from '@/components/section/SignInWithGithub/SignInWithGithub';
 import NavButtons from '@/components/section/NavButtons/NavButtons';
 import SignInPage from './auth/signin/page';
 
